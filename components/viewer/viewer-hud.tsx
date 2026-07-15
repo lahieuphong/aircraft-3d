@@ -328,7 +328,7 @@ function ViewerHud({
         <div className="glass-panel pointer-events-none absolute bottom-5 right-5 hidden items-center gap-3 rounded-xl px-3.5 py-2.5 xl:flex">
           <MousePointer2 className="size-4 text-primary" />
           <div className="text-[9px] leading-4 text-muted-foreground">
-            <span className="text-[#dbe5e6]">Kéo</span> để xoay · <span className="text-[#dbe5e6]">Cuộn</span> để zoom
+            <span className="text-[#dbe5e6]">Kéo/MMB</span> xoay · <span className="text-[#dbe5e6]">Shift+MMB</span> pan · <span className="text-[#dbe5e6]">Cuộn</span> zoom sâu
           </div>
           <span className="h-5 w-px bg-white/[0.08]" />
           <Keyboard className="size-4 text-muted-foreground" />

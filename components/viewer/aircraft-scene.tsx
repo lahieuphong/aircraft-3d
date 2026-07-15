@@ -12,6 +12,7 @@ import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import {
   AdaptiveDpr,
   CameraControls,
+  CameraControlsImpl,
   ContactShadows,
   Environment,
   Grid,
@@ -332,6 +333,48 @@ type CameraRigProps = {
 
 function CameraRig({ preset, revision }: CameraRigProps) {
   const controls = useRef<ElementRef<typeof CameraControls> | null>(null);
+  const domElement = useThree((state) => state.gl.domElement);
+
+  useEffect(() => {
+    const instance = controls.current;
+
+    if (!instance) {
+      return;
+    }
+
+    const { ACTION } = CameraControlsImpl;
+    const syncMiddleButton = (event: {
+      ctrlKey: boolean;
+      metaKey: boolean;
+      shiftKey: boolean;
+    }) => {
+      instance.mouseButtons.middle = event.shiftKey
+        ? ACTION.TRUCK
+        : event.ctrlKey || event.metaKey
+          ? ACTION.DOLLY
+          : ACTION.ROTATE;
+    };
+    const resetMiddleButton = () => {
+      instance.mouseButtons.middle = ACTION.ROTATE;
+    };
+
+    instance.mouseButtons.left = ACTION.ROTATE;
+    instance.mouseButtons.right = ACTION.TRUCK;
+    instance.mouseButtons.wheel = ACTION.DOLLY;
+    resetMiddleButton();
+
+    domElement.addEventListener("pointerdown", syncMiddleButton, true);
+    window.addEventListener("keydown", syncMiddleButton);
+    window.addEventListener("keyup", syncMiddleButton);
+    window.addEventListener("blur", resetMiddleButton);
+
+    return () => {
+      domElement.removeEventListener("pointerdown", syncMiddleButton, true);
+      window.removeEventListener("keydown", syncMiddleButton);
+      window.removeEventListener("keyup", syncMiddleButton);
+      window.removeEventListener("blur", resetMiddleButton);
+    };
+  }, [domElement]);
 
   useEffect(() => {
     const camera = CAMERA_PRESETS[preset];
@@ -344,15 +387,18 @@ function CameraRig({ preset, revision }: CameraRigProps) {
     <CameraControls
       ref={controls}
       makeDefault
-      smoothTime={0.48}
-      draggingSmoothTime={0.12}
-      minDistance={4.2}
+      smoothTime={0.25}
+      draggingSmoothTime={0.08}
+      minDistance={0.1}
       maxDistance={58}
       minPolarAngle={0}
       maxPolarAngle={Math.PI / 2 - 0.015}
-      dollySpeed={0.7}
-      truckSpeed={1.4}
+      azimuthRotateSpeed={0.9}
+      polarRotateSpeed={0.9}
+      dollySpeed={0.9}
+      truckSpeed={1.5}
       dollyToCursor
+      infinityDolly
     />
   );
 }

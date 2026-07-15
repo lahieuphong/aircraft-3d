@@ -181,8 +181,9 @@ Cuối cùng, kiểm tra trên ít nhất một điện thoại thật và một
 
 ## Điều khiển viewer
 
-- Kéo chuột hoặc một ngón: orbit.
-- Cuộn hoặc pinch: zoom.
+- Kéo chuột trái, MMB hoặc một ngón: orbit.
+- `Shift + MMB` hoặc kéo chuột phải: pan.
+- `Ctrl + MMB`, cuộn hoặc pinch: zoom theo con trỏ; có thể tiến sâu vào bên trong model.
 - `Space`: bật/tắt tự xoay.
 - `R`: reset; `G`: grid; `W`: wireframe.
 - `1`–`4`: phối cảnh, chính diện, cạnh bên và từ trên.

@@ -198,7 +198,7 @@ function AircraftViewerContent() {
             camera={{
               position: [18.5, 12, 20.5],
               fov: 40,
-              near: 0.1,
+              near: 0.02,
               far: 160,
             }}
             gl={{

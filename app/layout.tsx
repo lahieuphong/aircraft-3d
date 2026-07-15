@@ -5,7 +5,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "AeroView — Aircraft Digital Twin",
   description:
-    "Trình xem aircraft 3D thời gian thực với WebGL, KTX2, Meshopt và Draco.",
+    "Trình xem aircraft 3D thời gian thực với WebGL, KTX2 và Meshopt.",
 };
 
 export const viewport: Viewport = {

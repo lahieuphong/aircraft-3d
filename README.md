@@ -35,7 +35,7 @@ File nguồn `assets/source/aircraft.glb` chỉ dùng trong quá trình authorin
 | `aircraft-mobile.glb` | 512 px | ~5,6 MB | ~11,8 MiB | Điện thoại, tablet, màn hình nhỏ, thiết bị RAM thấp hoặc mạng chậm |
 | `aircraft-pc.glb` | 1024 px | ~11,7 MB | ~47 MiB | PC và thiết bị có tài nguyên tốt hơn |
 
-Các số VRAM là ước tính tối thiểu cho texture ETC1S sau khi Basis transcoder chọn định dạng nén phù hợp với GPU; thiết bị cũ có thể dùng nhiều hơn. Toàn bộ thư mục static export hiện khoảng 22,6 MB, còn `assets/source/aircraft.glb` nguồn không được deploy.
+Các số VRAM là ước tính tối thiểu cho texture ETC1S sau khi Basis transcoder chọn định dạng nén phù hợp với GPU; thiết bị cũ có thể dùng nhiều hơn. Static export chỉ chứa asset runtime, còn `assets/source/aircraft.glb` nguồn không được deploy.
 
 Viewer không tải cả hai file. Khi mở trang, code chọn đúng một model trước khi dựng Canvas:
 
@@ -60,7 +60,7 @@ npm run optimize:model:webp
 
 Pipeline KTX2 dùng encoder WASM cục bộ từ dependencies của dự án; không cần cài `toktx` hoặc KTX-Software toàn hệ thống. KTX2 có thể lớn hơn WebP khi tải qua mạng, nhưng giảm đáng kể VRAM texture, chi phí upload GPU và hiện tượng rung texture ở khoảng cách xa nhờ mipmap — phù hợp hơn cho điện thoại.
 
-Hai lệnh ghi vào cùng hai file trong `public/models/`; pipeline chạy sau cùng là phiên bản được build và deploy. `KTX2Loader`, Basis transcoder, Meshopt decoder và Draco decoder đều được self-host trong `public/decoders/`.
+Hai lệnh ghi vào cùng hai file trong `public/models/`; pipeline chạy sau cùng là phiên bản được build và deploy. `KTX2Loader` dùng Basis transcoder có filename hash do Next.js phát hành trong `/_next/static/media/`, còn Meshopt decoder được đóng gói cùng JavaScript bundle.
 
 Sau khi tạo model, luôn build lại để model mới được chép vào `dist/models/`:
 
@@ -81,12 +81,9 @@ dist/
 ├── 404.html
 ├── web.config
 ├── _next/static/
-├── models/
-│   ├── aircraft-mobile.glb
-│   └── aircraft-pc.glb
-└── decoders/
-    ├── basis/
-    └── draco/
+└── models/
+    ├── aircraft-mobile.glb
+    └── aircraft-pc.glb
 ```
 
 Chỉ sao chép **nội dung của `dist/`** lên IIS. Không deploy các thư mục/file sau:
@@ -152,12 +149,11 @@ Binding HTTP vẫn cần thiết vì `web.config` chịu trách nhiệm redirect
 
 `public/web.config` được Next.js chép thành `dist/web.config` và cấu hình:
 
-- MIME cho `.glb`, `.gltf`, `.bin`, `.ktx2`, `.ktx`, `.wasm`, `.webp`, `.drc` và `.mjs`.
+- MIME cho `.glb`, `.gltf`, `.bin`, `.ktx2`, `.ktx`, `.wasm`, `.webp` và `.mjs`.
 - HTML và file không có rule riêng: không cache, phù hợp để nhận bản deploy mới.
 - `/_next/static/`: cache 365 ngày với `immutable`; các filename này đã có hash.
 - `/models/`: cache 7 ngày và có ETag.
-- `/decoders/`: cache 30 ngày và có ETag.
-- CSP chỉ cho tài nguyên self-host, đồng thời cho phép WebAssembly và blob worker của Basis/Draco.
+- CSP chỉ cho tài nguyên self-host, đồng thời cho phép WebAssembly và blob worker của Basis.
 - HSTS, `nosniff`, Referrer Policy, Permissions Policy và các header bảo vệ framing.
 
 Tên model hiện là URL cố định. Khi thay GLB nhưng giữ nguyên filename, trình duyệt cũ có thể giữ model trước đó tối đa 7 ngày. Khi cần phát hành model khẩn cấp, hãy đổi version trong URL/filename hoặc điều chỉnh chiến lược cache trước khi deploy.
@@ -171,7 +167,6 @@ curl.exe -I http://aircraft-3d.hongvan.net/
 curl.exe -I https://aircraft-3d.hongvan.net/
 curl.exe -I https://aircraft-3d.hongvan.net/models/aircraft-mobile.glb
 curl.exe -I https://aircraft-3d.hongvan.net/models/aircraft-pc.glb
-curl.exe -I https://aircraft-3d.hongvan.net/decoders/basis/basis_transcoder.wasm
 ```
 
 Kết quả mong đợi:
@@ -179,7 +174,7 @@ Kết quả mong đợi:
 - HTTP trả redirect `301` về HTTPS canonical host.
 - Trang HTTPS trả `200` và có CSP/HSTS.
 - GLB trả `Content-Type: model/gltf-binary` và cache 7 ngày.
-- WASM trả `Content-Type: application/wasm` và cache 30 ngày.
+- Basis WASM có filename hash trong `/_next/static/media/`, trả `Content-Type: application/wasm` và cache immutable.
 - DevTools Network không có request ra CDN; model, worker và decoder đều tải từ cùng domain.
 
 Cuối cùng, kiểm tra trên ít nhất một điện thoại thật và một PC: model Mobile/PC được chọn đúng, kính trong suốt nhìn được cockpit, orbit/pinch mượt và không có lỗi WebGL trong Console.

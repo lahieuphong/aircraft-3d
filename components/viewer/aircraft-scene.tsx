@@ -29,7 +29,6 @@ import {
   Texture,
   type WebGLRenderer,
 } from "three";
-import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { KTX2Loader } from "three/examples/jsm/loaders/KTX2Loader.js";
 import { MeshoptDecoder } from "three/examples/jsm/libs/meshopt_decoder.module.js";
@@ -52,9 +51,6 @@ const CAMERA_PRESETS: Record<
   top: { position: [0, 31, 0.01], target: [0, 0.8, 0] },
 };
 
-const dracoLoader = new DRACOLoader();
-dracoLoader.setDecoderPath("/decoders/draco/");
-
 const ktx2Loaders = new WeakMap<WebGLRenderer, KTX2Loader>();
 
 function getKTX2Loader(renderer: WebGLRenderer) {
@@ -62,7 +58,6 @@ function getKTX2Loader(renderer: WebGLRenderer) {
   if (cachedLoader) return cachedLoader;
 
   const loader = new KTX2Loader();
-  loader.setTranscoderPath("/decoders/basis/");
   loader.setWorkerLimit(2);
   loader.detectSupport(renderer);
   ktx2Loaders.set(renderer, loader);
@@ -205,7 +200,6 @@ function AircraftModel({
   const invalidate = useThree((state) => state.invalidate);
   const gltf = useLoader(GLTFLoader, modelUrl, (loader) => {
     loader.setCrossOrigin("anonymous");
-    loader.setDRACOLoader(dracoLoader);
     loader.setKTX2Loader(getKTX2Loader(renderer));
     loader.setMeshoptDecoder(MeshoptDecoder);
   });

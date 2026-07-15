@@ -28,14 +28,14 @@ npm run start
 
 ## Hai model PC và Mobile
 
-File nguồn `aircraft.glb` chỉ dùng trong quá trình authoring, không được đưa lên IIS. Viewer tự chọn:
+File nguồn `assets/source/aircraft.glb` chỉ dùng trong quá trình authoring, không được đưa lên IIS. Viewer tự chọn:
 
 | Profile | Texture tối đa | Dung lượng GLB | VRAM texture tối thiểu | Thiết bị mục tiêu |
 | --- | ---: | ---: | ---: | --- |
 | `aircraft-mobile.glb` | 512 px | ~5,6 MB | ~11,8 MiB | Điện thoại, tablet, màn hình nhỏ, thiết bị RAM thấp hoặc mạng chậm |
 | `aircraft-pc.glb` | 1024 px | ~11,7 MB | ~47 MiB | PC và thiết bị có tài nguyên tốt hơn |
 
-Các số VRAM là ước tính tối thiểu cho texture ETC1S sau khi Basis transcoder chọn định dạng nén phù hợp với GPU; thiết bị cũ có thể dùng nhiều hơn. Toàn bộ thư mục static export hiện khoảng 22,6 MB, còn `aircraft.glb` nguồn không được deploy.
+Các số VRAM là ước tính tối thiểu cho texture ETC1S sau khi Basis transcoder chọn định dạng nén phù hợp với GPU; thiết bị cũ có thể dùng nhiều hơn. Toàn bộ thư mục static export hiện khoảng 22,6 MB, còn `assets/source/aircraft.glb` nguồn không được deploy.
 
 Viewer không tải cả hai file. Khi mở trang, code chọn đúng một model trước khi dựng Canvas:
 
@@ -94,7 +94,7 @@ Chỉ sao chép **nội dung của `dist/`** lên IIS. Không deploy các thư m
 - `.next/`
 - `node_modules/`
 - `app/`, `components/`, `scripts/`
-- `aircraft.glb` gốc
+- `assets/source/aircraft.glb` gốc
 - toàn bộ repository
 
 Đây là điểm quan trọng để tránh đưa hàng trăm MB hoặc hơn 1 GB file build/source không cần thiết lên máy chủ.

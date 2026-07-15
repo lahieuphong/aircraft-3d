@@ -4,12 +4,12 @@ param(
 
 $ErrorActionPreference = "Stop"
 $ProjectRoot = (Resolve-Path (Join-Path $PSScriptRoot "..")).Path
-$SourceModel = Join-Path $ProjectRoot "aircraft.glb"
+$SourceModel = Join-Path $ProjectRoot "assets\source\aircraft.glb"
 $OutputDirectory = Join-Path $ProjectRoot "public\models"
 $TempDirectory = Join-Path $ProjectRoot ".model-build"
 
 if (-not (Test-Path -LiteralPath $SourceModel)) {
-  throw "Khong tim thay aircraft.glb o thu muc goc du an."
+  throw "Khong tim thay assets/source/aircraft.glb."
 }
 
 if (-not $TempDirectory.StartsWith($ProjectRoot, [StringComparison]::OrdinalIgnoreCase)) {

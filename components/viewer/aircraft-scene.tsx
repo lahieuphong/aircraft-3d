@@ -163,7 +163,7 @@ function AircraftScene({
             mobileOptimized ? (quality === "quality" ? 256 : 128) : quality === "quality" ? 512 : 256
           }
           frames={1}
-          color="#111216"
+          color="#17384a"
         />
       </Suspense>
 
@@ -173,10 +173,10 @@ function AircraftScene({
           args={[34, 34]}
           cellSize={0.5}
           cellThickness={0.45}
-          cellColor="#45474e"
+          cellColor="#7893a3"
           sectionSize={2.5}
           sectionThickness={0.8}
-          sectionColor="#777a82"
+          sectionColor="#0a4b7f"
           fadeDistance={32}
           fadeStrength={1.1}
           infiniteGrid

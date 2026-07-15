@@ -12,13 +12,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-[0_0_24px_rgb(242_140_40_/_0.14)] hover:bg-[#ffad5b]",
+          "bg-primary text-primary-foreground shadow-[0_0_24px_rgb(10_75_127_/_0.18)] hover:bg-[#0d609c]",
         secondary:
-          "border border-border bg-secondary/80 text-secondary-foreground hover:border-white/15 hover:bg-accent",
+          "border border-border bg-secondary/80 text-secondary-foreground hover:border-primary/35 hover:bg-accent",
         outline:
-          "border border-border bg-black/10 text-foreground hover:border-white/20 hover:bg-white/[0.06]",
-        ghost: "text-muted-foreground hover:bg-white/[0.06] hover:text-foreground",
-        hud: "border border-white/10 bg-[#292a30]/82 text-[#adaeb5] hover:border-primary/25 hover:bg-[#36373e] hover:text-white data-[active=true]:border-primary/40 data-[active=true]:bg-primary/10 data-[active=true]:text-primary",
+          "border border-border bg-background/35 text-foreground hover:border-primary/35 hover:bg-primary/[0.08]",
+        ghost: "text-muted-foreground hover:bg-primary/[0.08] hover:text-foreground",
+        hud: "border border-primary/15 bg-card/85 text-muted-foreground hover:border-primary/35 hover:bg-accent/70 hover:text-foreground data-[active=true]:border-primary/45 data-[active=true]:bg-primary/12 data-[active=true]:text-primary",
         destructive:
           "border border-destructive/25 bg-destructive/10 text-destructive hover:bg-destructive/18",
       },

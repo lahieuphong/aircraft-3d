@@ -247,10 +247,10 @@ function AircraftViewerContent() {
       ) : null}
 
       {contextLost ? (
-        <div className="absolute inset-0 z-50 grid place-items-center bg-[#17181c]/94 px-5 backdrop-blur-lg">
+        <div className="absolute inset-0 z-50 grid place-items-center bg-background/94 px-5 backdrop-blur-lg">
           <div className="glass-panel max-w-sm rounded-2xl p-7 text-center">
             <AlertTriangle className="mx-auto size-8 text-amber-300" />
-            <h2 className="mt-4 text-lg font-semibold text-white">WebGL context đã bị gián đoạn</h2>
+            <h2 className="mt-4 text-lg font-semibold text-foreground">WebGL context đã bị gián đoạn</h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
               GPU có thể vừa đổi trạng thái hoặc thiếu bộ nhớ. Tải lại sẽ khởi tạo một context sạch.
             </p>

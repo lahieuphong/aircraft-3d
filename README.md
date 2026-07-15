@@ -1,6 +1,6 @@
-# AeroView — Aircraft 3D Viewer
+# Bảo tàng Chứng tích Chiến tranh — Aircraft 3D Viewer
 
-Viewer máy bay 3D toàn màn hình, tối ưu cho điện thoại và PC bằng Next.js 16, React 19, React Three Fiber, Three.js và shadcn/ui.
+Trải nghiệm số mô hình máy bay 3D của Bảo tàng Chứng tích Chiến tranh, tối ưu cho điện thoại và PC bằng Next.js 16, React 19, React Three Fiber, Three.js và shadcn/ui.
 
 Ứng dụng được xuất thành website tĩnh. Máy chủ production không cần Node.js và không chạy `next start` — IIS chỉ phục vụ nội dung trong thư mục `dist/`.
 

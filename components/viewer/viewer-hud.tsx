@@ -10,7 +10,6 @@ import {
   Maximize2,
   Minimize2,
   MousePointer2,
-  Plane,
   RefreshCw,
   RotateCw,
   Scan,
@@ -19,6 +18,7 @@ import {
   X,
 } from "lucide-react";
 
+import { MuseumLogo } from "@/components/brand/museum-logo";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Slider } from "@/components/ui/slider";
@@ -73,38 +73,48 @@ function ViewerHud({
   return (
     <TooltipProvider>
       <div className="pointer-events-none absolute inset-0 z-20 select-none">
-        <header className="pointer-events-auto absolute inset-x-0 top-0 flex h-[68px] items-center justify-between border-b border-white/[0.07] bg-[#17181c]/62 px-3 backdrop-blur-md sm:px-5">
-          <div className="flex items-center gap-3">
-            <div className="grid size-9 place-items-center rounded-lg border border-primary/20 bg-primary/10 text-primary sm:size-10">
-              <Plane className="size-4 -rotate-12 sm:size-5" />
-            </div>
-            <div>
+        <header className="pointer-events-auto absolute inset-x-0 top-0 flex h-[68px] items-center justify-between border-b border-[#d3cfc2]/25 bg-[#0a4b7f]/94 px-3 text-[#f5f1e7] shadow-[0_10px_35px_rgb(10_75_127_/_0.18)] backdrop-blur-md sm:px-5">
+          <div className="flex min-w-0 items-center gap-2.5 sm:gap-3">
+            <MuseumLogo
+              size={48}
+              priority
+              className="size-10 shrink-0 drop-shadow-[0_4px_12px_rgb(4_35_58_/_0.28)] sm:size-11"
+            />
+            <div className="min-w-0">
               <div className="flex items-center gap-2">
-                <span className="text-sm font-semibold tracking-[0.13em] text-white">AEROVIEW</span>
-                <span className="hidden h-3 w-px bg-white/15 sm:block" />
-                <span className="technical-label hidden text-[8px] text-muted-foreground sm:block">
-                  Digital twin 01
+                <span className="truncate text-[10px] font-semibold tracking-[0.09em] text-[#f5f1e7] sm:text-xs">
+                  WAR REMNANTS MUSEUM
+                </span>
+                <span className="hidden h-3 w-px bg-[#d3cfc2]/30 sm:block" />
+                <span className="technical-label hidden text-[8px] text-[#d3cfc2]/75 sm:block">
+                  Digital exhibit 01
                 </span>
               </div>
-              <p className="mt-0.5 text-[10px] text-muted-foreground sm:text-[11px]">
-                Interactive aircraft inspection
+              <p className="mt-0.5 max-w-[170px] truncate text-[9px] text-[#d3cfc2]/80 sm:max-w-none sm:text-[10px]">
+                Bảo tàng Chứng tích Chiến tranh
               </p>
             </div>
           </div>
 
           <div className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-2 md:flex">
-            <Badge variant="secondary" className="h-7 bg-black/20 px-3">
+            <Badge
+              variant="secondary"
+              className="h-7 border-[#d3cfc2]/20 bg-[#d3cfc2]/10 px-3 text-[#f5f1e7]/80"
+            >
               <span
                 className={cn(
                   "size-1.5 rounded-full",
                   isLoaded
-                    ? "bg-primary shadow-[0_0_8px_#f28c28]"
+                    ? "bg-[#d3cfc2] shadow-[0_0_9px_rgb(211_207_194_/_0.72)]"
                     : "animate-pulse bg-amber-300",
                 )}
               />
               {isLoaded ? "Renderer online" : "Loading model"}
             </Badge>
-            <Badge variant="outline" className="h-7 px-3">
+            <Badge
+              variant="outline"
+              className="h-7 border-[#d3cfc2]/20 px-3 text-[#d3cfc2]/75"
+            >
               {ASSET_PROFILES[assetProfile].label} · MESHOPT
             </Badge>
           </div>
@@ -118,7 +128,7 @@ function ViewerHud({
                   aria-label="Thông tin mô hình"
                   data-active={infoOpen}
                   onClick={() => setInfoOpen((value) => !value)}
-                  className="lg:hidden"
+                  className="text-[#d3cfc2]/80 hover:bg-[#d3cfc2]/12 hover:text-[#f5f1e7] data-[active=true]:bg-[#d3cfc2]/14 lg:hidden"
                 >
                   <Info />
                 </Button>
@@ -132,6 +142,7 @@ function ViewerHud({
                   size="icon"
                   aria-label={isFullscreen ? "Thoát toàn màn hình" : "Toàn màn hình"}
                   onClick={onFullscreen}
+                  className="text-[#d3cfc2]/80 hover:bg-[#d3cfc2]/12 hover:text-[#f5f1e7]"
                 >
                   {isFullscreen ? <Minimize2 /> : <Maximize2 />}
                 </Button>
@@ -161,7 +172,7 @@ function ViewerHud({
           <div className="flex items-start justify-between pr-7 lg:pr-0">
             <div>
               <p className="technical-label text-[9px] text-primary">Asset overview</p>
-              <h1 className="mt-2 text-xl font-medium tracking-[-0.035em] text-white">
+              <h1 className="mt-2 text-xl font-medium tracking-[-0.035em] text-foreground">
                 Aircraft 3D
               </h1>
             </div>
@@ -171,7 +182,7 @@ function ViewerHud({
             Mô hình Blender glTF 2.0, hiển thị với pipeline texture nén cho WebGL.
           </p>
 
-          <div className="my-5 h-px bg-white/[0.07]" />
+          <div className="my-5 h-px bg-primary/12" />
 
           <div className="grid grid-cols-3 gap-2">
             <Stat value={MODEL_STATS.triangles} label="Triangles" />
@@ -179,10 +190,10 @@ function ViewerHud({
             <Stat value={MODEL_STATS.materials} label="Materials" />
           </div>
 
-          <div className="mt-4 rounded-lg border border-white/[0.055] bg-black/15 px-3 py-2.5">
+          <div className="mt-4 rounded-lg border border-primary/12 bg-primary/[0.045] px-3 py-2.5">
             <div className="flex items-center justify-between gap-3 text-[10px]">
               <span className="text-muted-foreground">Kích thước scene</span>
-              <span className="font-mono text-[#dce5e6]">{MODEL_STATS.dimensions}</span>
+              <span className="font-mono text-foreground">{MODEL_STATS.dimensions}</span>
             </div>
           </div>
 
@@ -206,7 +217,7 @@ function ViewerHud({
           </div>
         </aside>
 
-        <div className="pointer-events-auto absolute bottom-[74px] left-1/2 flex -translate-x-1/2 items-center rounded-lg border border-white/[0.08] bg-[#0b181c]/85 p-1 shadow-lg backdrop-blur-md md:hidden">
+        <div className="glass-panel pointer-events-auto absolute bottom-[74px] left-1/2 flex -translate-x-1/2 items-center rounded-lg p-1 md:hidden">
           {VIEW_PRESETS.map((view) => (
             <button
               key={view.value}
@@ -227,7 +238,7 @@ function ViewerHud({
             <div className="flex items-center justify-between">
               <div>
                 <p className="technical-label text-[8px] text-primary">Scene controls</p>
-                <h2 className="mt-1 text-sm font-medium text-white">Thiết lập hiển thị</h2>
+                <h2 className="mt-1 text-sm font-medium text-foreground">Thiết lập hiển thị</h2>
               </div>
               <Button
                 variant="ghost"
@@ -272,19 +283,19 @@ function ViewerHud({
               </SettingSlider>
             </div>
 
-            <div className="mt-5 flex items-center justify-between border-t border-white/[0.07] pt-4">
+            <div className="mt-5 flex items-center justify-between border-t border-primary/12 pt-4">
               <div>
-                <p className="text-xs text-[#dfe8e9]">Render quality</p>
+                <p className="text-xs text-foreground">Render quality</p>
                 <p className="mt-0.5 text-[10px] text-muted-foreground">Giới hạn DPR và bóng đổ</p>
               </div>
-              <div className="flex rounded-lg border border-white/[0.08] bg-black/15 p-1">
+              <div className="flex rounded-lg border border-primary/12 bg-primary/[0.045] p-1">
                 {(["balanced", "quality"] as const).map((quality) => (
                   <button
                     key={quality}
                     type="button"
                     className={cn(
                       "rounded-md px-2.5 py-1.5 text-[10px] capitalize text-muted-foreground transition-colors",
-                      settings.quality === quality && "bg-white/[0.08] text-white",
+                      settings.quality === quality && "bg-primary/12 text-primary",
                     )}
                     onClick={() => onSettingsChange({ quality })}
                   >
@@ -315,7 +326,7 @@ function ViewerHud({
             active={settings.wireframe}
             onClick={() => onSettingsChange({ wireframe: !settings.wireframe })}
           />
-          <span className="mx-0.5 h-5 w-px bg-white/[0.08]" />
+          <span className="mx-0.5 h-5 w-px bg-primary/12" />
           <HudButton label="Đặt lại" icon={RefreshCw} onClick={onReset} />
           <HudButton
             label="Thiết lập"
@@ -328,9 +339,9 @@ function ViewerHud({
         <div className="glass-panel pointer-events-none absolute bottom-5 right-5 hidden items-center gap-3 rounded-xl px-3.5 py-2.5 xl:flex">
           <MousePointer2 className="size-4 text-primary" />
           <div className="text-[9px] leading-4 text-muted-foreground">
-            <span className="text-[#dbe5e6]">Kéo/MMB</span> xoay · <span className="text-[#dbe5e6]">Shift+MMB</span> pan · <span className="text-[#dbe5e6]">Cuộn</span> zoom sâu
+            <span className="text-foreground">Kéo/MMB</span> xoay · <span className="text-foreground">Shift+MMB</span> pan · <span className="text-foreground">Cuộn</span> zoom sâu
           </div>
-          <span className="h-5 w-px bg-white/[0.08]" />
+          <span className="h-5 w-px bg-primary/12" />
           <Keyboard className="size-4 text-muted-foreground" />
           <div className="font-mono text-[8px] text-muted-foreground">R · G · W · SPACE</div>
         </div>
@@ -346,8 +357,8 @@ type StatProps = {
 
 function Stat({ value, label }: StatProps) {
   return (
-    <div className="rounded-lg border border-white/[0.055] bg-white/[0.025] px-2 py-3 text-center">
-      <p className="font-mono text-sm font-medium text-white">{value}</p>
+    <div className="rounded-lg border border-primary/12 bg-primary/[0.045] px-2 py-3 text-center">
+      <p className="font-mono text-sm font-medium text-foreground">{value}</p>
       <p className="mt-1 text-[8px] uppercase tracking-wider text-muted-foreground">{label}</p>
     </div>
   );
@@ -371,9 +382,9 @@ function HudButton({ label, icon: Icon, active = false, onClick }: HudButtonProp
           onClick={onClick}
           aria-label={label}
           aria-pressed={active}
-          className="size-10 text-muted-foreground hover:text-white data-[active=true]:bg-primary/10 data-[active=true]:text-primary sm:size-9"
+          className="size-10 text-muted-foreground hover:text-primary data-[active=true]:bg-primary/10 data-[active=true]:text-primary sm:size-9"
         >
-          <Icon className={cn(active && "drop-shadow-[0_0_5px_rgb(242_140_40_/_0.48)]")} />
+          <Icon className={cn(active && "drop-shadow-[0_0_5px_rgb(10_75_127_/_0.42)]")} />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="top">{label}</TooltipContent>
@@ -392,7 +403,7 @@ function SettingSlider({ icon: Icon, label, valueLabel, children }: SettingSlide
   return (
     <div>
       <div className="mb-2.5 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-xs text-[#dfe8e9]">
+        <div className="flex items-center gap-2 text-xs text-foreground">
           <Icon className="size-3.5 text-muted-foreground" />
           {label}
         </div>

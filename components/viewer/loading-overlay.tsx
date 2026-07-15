@@ -1,8 +1,9 @@
 "use client";
 
 import { useProgress } from "@react-three/drei";
-import { Box, Cpu, Database, Sparkles } from "lucide-react";
+import { Cpu, Database, Sparkles, type LucideIcon } from "lucide-react";
 
+import { MuseumLogo } from "@/components/brand/museum-logo";
 import { cn } from "@/lib/utils";
 import {
   ASSET_PROFILES,
@@ -23,7 +24,7 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
       aria-live="polite"
       aria-hidden={isLoaded}
       className={cn(
-        "absolute inset-0 z-40 grid place-items-center bg-[#17181c]/94 px-5 backdrop-blur-md transition-all duration-700",
+        "absolute inset-0 z-40 grid place-items-center bg-background/94 px-5 backdrop-blur-md transition-all duration-700",
         isLoaded && "pointer-events-none invisible opacity-0",
       )}
     >
@@ -31,25 +32,29 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
       <div className="hud-corners w-full max-w-[440px] px-6 py-8 sm:px-10 sm:py-10">
         <div className="mb-8 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="relative grid size-11 place-items-center rounded-xl border border-primary/20 bg-primary/10 text-primary">
-              <Box className="size-5" />
-              <span className="absolute -right-1 -top-1 size-2.5 rounded-full border-2 border-[#17181c] bg-primary shadow-[0_0_12px_#f28c28]" />
+            <div className="relative shrink-0">
+              <MuseumLogo
+                size={52}
+                priority
+                className="rounded-full border border-primary/15 shadow-md"
+              />
+              <span className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full border-2 border-background bg-primary shadow-sm" />
             </div>
             <div>
-              <p className="technical-label text-[9px] text-primary">Digital twin</p>
-              <p className="mt-1 text-sm font-medium text-white">
+              <p className="technical-label text-[9px] text-primary">War Remnants Museum</p>
+              <p className="mt-1 text-sm font-medium text-foreground">
                 {ASSET_PROFILES[assetProfile].filename}
               </p>
             </div>
           </div>
-          <span className="font-mono text-2xl font-light tabular-nums text-white">
+          <span className="font-mono text-2xl font-light tabular-nums text-foreground">
             {Math.round(safeProgress)}<span className="text-sm text-muted-foreground">%</span>
           </span>
         </div>
 
         <div className="loading-track h-1.5 rounded-full">
           <div
-            className="h-full rounded-full bg-primary shadow-[0_0_16px_rgb(242_140_40_/_0.5)] transition-[width] duration-300"
+            className="h-full rounded-full bg-primary shadow-md transition-[width] duration-300"
             style={{ width: `${Math.max(active ? 3 : 0, safeProgress)}%` }}
           />
         </div>
@@ -69,7 +74,7 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
 }
 
 type LoadingStepProps = {
-  icon: typeof Box;
+  icon: LucideIcon;
   label: string;
   active: boolean;
   done: boolean;
@@ -79,9 +84,9 @@ function LoadingStep({ icon: Icon, label, active, done }: LoadingStepProps) {
   return (
     <div
       className={cn(
-        "flex items-center justify-center gap-1.5 rounded-md border border-white/[0.06] bg-white/[0.025] py-2 text-[10px] tracking-wide text-muted-foreground transition-colors",
+        "flex items-center justify-center gap-1.5 rounded-md border border-border/70 bg-card/50 py-2 text-[10px] tracking-wide text-muted-foreground transition-colors",
         active && "border-primary/20 text-primary",
-        done && "text-[#c7d2d4]",
+        done && "text-foreground/75",
       )}
     >
       <Icon className="size-3" />

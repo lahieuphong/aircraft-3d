@@ -3,16 +3,17 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AeroView — Aircraft Digital Twin",
+  title: "Bảo tàng Chứng tích Chiến tranh — Aircraft Digital Twin",
+  applicationName: "War Remnants Museum Aircraft Digital Twin",
   description:
-    "Trình xem aircraft 3D thời gian thực với WebGL, KTX2 và Meshopt.",
+    "Trải nghiệm mô hình máy bay 3D trực tuyến của Bảo tàng Chứng tích Chiến tranh.",
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 1,
-  themeColor: "#17181c",
+  themeColor: "#D3CFC2",
 };
 
 export default function RootLayout({

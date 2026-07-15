@@ -193,7 +193,7 @@ function ViewerHud({
           <div className="mt-4 rounded-lg border border-primary/12 bg-primary/[0.045] px-3 py-2.5">
             <div className="flex items-center justify-between gap-3 text-[10px]">
               <span className="text-muted-foreground">Kích thước scene</span>
-              <span className="font-mono text-foreground">{MODEL_STATS.dimensions}</span>
+              <span className="font-sans text-foreground">{MODEL_STATS.dimensions}</span>
             </div>
           </div>
 
@@ -210,7 +210,7 @@ function ViewerHud({
                   className="justify-between px-3"
                 >
                   {view.label}
-                  <span className="font-mono text-[8px] opacity-55">{view.short}</span>
+                  <span className="font-sans text-[8px] opacity-55">{view.short}</span>
                 </Button>
               ))}
             </div>
@@ -224,7 +224,7 @@ function ViewerHud({
               type="button"
               onClick={() => onViewChange(view.value)}
               className={cn(
-                "h-7 rounded-md px-3 font-mono text-[9px] tracking-wider text-muted-foreground transition-colors",
+                "h-7 rounded-md px-3 font-sans text-[9px] tracking-wider text-muted-foreground transition-colors",
                 viewPreset === view.value && "bg-primary/12 text-primary",
               )}
             >
@@ -343,7 +343,7 @@ function ViewerHud({
           </div>
           <span className="h-5 w-px bg-primary/12" />
           <Keyboard className="size-4 text-muted-foreground" />
-          <div className="font-mono text-[8px] text-muted-foreground">R · G · W · SPACE</div>
+          <div className="font-sans text-[8px] text-muted-foreground">R · G · W · SPACE</div>
         </div>
       </div>
     </TooltipProvider>
@@ -358,7 +358,7 @@ type StatProps = {
 function Stat({ value, label }: StatProps) {
   return (
     <div className="rounded-lg border border-primary/12 bg-primary/[0.045] px-2 py-3 text-center">
-      <p className="font-mono text-sm font-medium text-foreground">{value}</p>
+      <p className="font-sans text-sm font-medium text-foreground">{value}</p>
       <p className="mt-1 text-[8px] uppercase tracking-wider text-muted-foreground">{label}</p>
     </div>
   );
@@ -407,7 +407,7 @@ function SettingSlider({ icon: Icon, label, valueLabel, children }: SettingSlide
           <Icon className="size-3.5 text-muted-foreground" />
           {label}
         </div>
-        <span className="font-mono text-[10px] text-primary">{valueLabel}</span>
+        <span className="font-sans text-[10px] text-primary">{valueLabel}</span>
       </div>
       {children}
     </div>

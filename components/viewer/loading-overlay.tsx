@@ -47,7 +47,7 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
               </p>
             </div>
           </div>
-          <span className="font-mono text-2xl font-light tabular-nums text-foreground">
+          <span className="font-sans text-2xl font-light tabular-nums text-foreground">
             {Math.round(safeProgress)}<span className="text-sm text-muted-foreground">%</span>
           </span>
         </div>
@@ -65,7 +65,7 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
           <LoadingStep icon={Sparkles} label="Render" active={safeProgress >= 95} done={isLoaded} />
         </div>
 
-        <p className="mt-7 text-center font-mono text-[10px] tracking-wide text-muted-foreground">
+        <p className="mt-7 text-center font-sans text-[10px] tracking-wide text-muted-foreground">
           KTX2 + MESHOPT · GPU READY · {total > 0 ? `${loaded}/${total} tài nguyên` : "đang kết nối GPU"}
         </p>
       </div>

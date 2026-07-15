@@ -41,6 +41,9 @@ import type {
 
 const MODEL_OFFSET: [number, number, number] = [0.213, 0.729, 0.149];
 const CAMERA_TARGET: [number, number, number] = [0, 2.72, 0];
+const MIN_CAMERA_DISTANCE = 0.1;
+const MAX_CAMERA_DISTANCE = 36;
+const MIN_CAMERA_ZOOM = 1;
 
 const CAMERA_PRESETS: Record<
   ViewPreset,
@@ -389,8 +392,9 @@ function CameraRig({ preset, revision }: CameraRigProps) {
       makeDefault
       smoothTime={0.25}
       draggingSmoothTime={0.08}
-      minDistance={0.1}
-      maxDistance={58}
+      minDistance={MIN_CAMERA_DISTANCE}
+      maxDistance={MAX_CAMERA_DISTANCE}
+      minZoom={MIN_CAMERA_ZOOM}
       minPolarAngle={0}
       maxPolarAngle={Math.PI / 2 - 0.015}
       azimuthRotateSpeed={0.9}
@@ -398,7 +402,7 @@ function CameraRig({ preset, revision }: CameraRigProps) {
       dollySpeed={0.9}
       truckSpeed={1.5}
       dollyToCursor
-      infinityDolly
+      infinityDolly={false}
     />
   );
 }

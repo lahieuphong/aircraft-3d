@@ -57,6 +57,11 @@ const CAMERA_PRESETS: Record<
   top: { position: [0, 31, 0.01], target: [0, 0.8, 0] },
 };
 
+const MOBILE_ISO_CAMERA = {
+  position: [21.3, 13.4, 23.6] as [number, number, number],
+  target: CAMERA_TARGET,
+};
+
 const ktx2Loaders = new WeakMap<WebGLRenderer, KTX2Loader>();
 
 function getKTX2Loader(renderer: WebGLRenderer) {
@@ -102,7 +107,11 @@ function AircraftScene({
   return (
     <>
       <RendererSettings exposure={exposure} onContextLost={onContextLost} />
-      <CameraRig preset={viewPreset} revision={viewRevision} />
+      <CameraRig
+        preset={viewPreset}
+        revision={viewRevision}
+        mobileOptimized={mobileOptimized}
+      />
       <AdaptiveDpr pixelated />
 
       <ambientLight color="#ffffff" intensity={0.16 * environmentIntensity} />
@@ -334,9 +343,10 @@ function RotatingModel({ active, resetRevision, children }: RotatingModelProps) 
 type CameraRigProps = {
   preset: ViewPreset;
   revision: number;
+  mobileOptimized: boolean;
 };
 
-function CameraRig({ preset, revision }: CameraRigProps) {
+function CameraRig({ preset, revision, mobileOptimized }: CameraRigProps) {
   const controls = useRef<ElementRef<typeof CameraControls> | null>(null);
   const domElement = useThree((state) => state.gl.domElement);
 
@@ -382,11 +392,14 @@ function CameraRig({ preset, revision }: CameraRigProps) {
   }, [domElement]);
 
   useEffect(() => {
-    const camera = CAMERA_PRESETS[preset];
+    const camera =
+      mobileOptimized && preset === "iso"
+        ? MOBILE_ISO_CAMERA
+        : CAMERA_PRESETS[preset];
     const [px, py, pz] = camera.position;
     const [tx, ty, tz] = camera.target;
     void controls.current?.setLookAt(px, py, pz, tx, ty, tz, revision > 0);
-  }, [preset, revision]);
+  }, [mobileOptimized, preset, revision]);
 
   return (
     <CameraControls

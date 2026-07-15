@@ -5,10 +5,7 @@ import { Cpu, Database, Sparkles, type LucideIcon } from "lucide-react";
 
 import { MuseumLogo } from "@/components/brand/museum-logo";
 import { cn } from "@/lib/utils";
-import {
-  ASSET_PROFILES,
-  type AssetProfile,
-} from "@/components/viewer/viewer-types";
+import type { AssetProfile } from "@/components/viewer/viewer-types";
 
 type LoadingOverlayProps = {
   isLoaded: boolean;
@@ -30,8 +27,8 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
     >
       <div className="scan-line" />
       <div className="hud-corners w-full max-w-[440px] px-6 py-8 sm:px-10 sm:py-10">
-        <div className="mb-8 flex items-center justify-between">
-          <div className="flex items-center gap-3">
+        <div className="mb-8 flex items-center justify-between gap-2">
+          <div className="flex min-w-0 items-center gap-3">
             <div className="relative shrink-0">
               <MuseumLogo
                 size={52}
@@ -40,14 +37,19 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
               />
               <span className="absolute -right-0.5 -top-0.5 size-2.5 rounded-full border-2 border-background bg-primary shadow-sm" />
             </div>
-            <div>
-              <p className="technical-label text-[9px] text-primary">War Remnants Museum</p>
-              <p className="mt-1 text-sm font-medium text-foreground">
-                {ASSET_PROFILES[assetProfile].filename}
+            <div className="min-w-0">
+              <p className="technical-label whitespace-nowrap text-[8px] tracking-[0.07em] text-primary sm:text-[9px] sm:tracking-[0.12em]">
+                BẢO TÀNG CHỨNG TÍCH CHIẾN TRANH
+              </p>
+              <p className="mt-1 whitespace-nowrap text-sm font-medium text-foreground">
+                Mô hình máy bay 3D
+              </p>
+              <p className="mt-0.5 whitespace-nowrap text-[10px] text-muted-foreground">
+                {assetProfile === "mobile" ? "Mobile" : "PC"}
               </p>
             </div>
           </div>
-          <span className="font-sans text-2xl font-light tabular-nums text-foreground">
+          <span className="shrink-0 font-sans text-2xl font-light tabular-nums text-foreground">
             {Math.round(safeProgress)}<span className="text-sm text-muted-foreground">%</span>
           </span>
         </div>
@@ -60,13 +62,13 @@ function LoadingOverlay({ isLoaded, assetProfile }: LoadingOverlayProps) {
         </div>
 
         <div className="mt-5 grid grid-cols-3 gap-2 text-center">
-          <LoadingStep icon={Database} label="Stream" active={safeProgress < 65} done={safeProgress >= 65} />
-          <LoadingStep icon={Cpu} label="Decode" active={safeProgress >= 65 && safeProgress < 95} done={safeProgress >= 95} />
-          <LoadingStep icon={Sparkles} label="Render" active={safeProgress >= 95} done={isLoaded} />
+          <LoadingStep icon={Database} label="Tải dữ liệu" active={safeProgress < 65} done={safeProgress >= 65} />
+          <LoadingStep icon={Cpu} label="Giải mã" active={safeProgress >= 65 && safeProgress < 95} done={safeProgress >= 95} />
+          <LoadingStep icon={Sparkles} label="Hiển thị" active={safeProgress >= 95} done={isLoaded} />
         </div>
 
         <p className="mt-7 text-center font-sans text-[10px] tracking-wide text-muted-foreground">
-          KTX2 + MESHOPT · GPU READY · {total > 0 ? `${loaded}/${total} tài nguyên` : "đang kết nối GPU"}
+          Dữ liệu đã tối ưu · {total > 0 ? `${loaded}/${total} tài nguyên` : "đang chuẩn bị hiển thị"}
         </p>
       </div>
     </div>

@@ -9,7 +9,7 @@ type MuseumLogoProps = {
 function MuseumLogo({ className, priority = false, size = 48 }: MuseumLogoProps) {
   return (
     <Image
-      src="/brand/war-remnants-museum-logo.png"
+      src="/icon.svg"
       width={size}
       height={size}
       sizes={`${size}px`}

@@ -25,7 +25,11 @@ class ViewerErrorBoundary extends Component<
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("War Remnants Museum 3D renderer failed", error, info.componentStack);
+    console.error(
+      "Không thể khởi tạo trình hiển thị 3D",
+      error,
+      info.componentStack,
+    );
   }
 
   render() {
@@ -44,7 +48,8 @@ class ViewerErrorBoundary extends Component<
             Không thể mở mô hình 3D
           </h1>
           <p className="mt-2 text-sm leading-6 text-muted-foreground">
-            WebGL có thể đã hết bộ nhớ hoặc thiết bị không hỗ trợ định dạng texture cần thiết.
+            Trình đồ họa có thể đã hết bộ nhớ hoặc thiết bị không hỗ trợ
+            định dạng hình ảnh cần thiết.
           </p>
           <Button
             className="mt-6"
@@ -53,12 +58,6 @@ class ViewerErrorBoundary extends Component<
             <RefreshCw className="size-4" />
             Tải lại trình xem
           </Button>
-          <details className="mt-5 text-left text-[11px] text-muted-foreground">
-            <summary className="cursor-pointer text-center">Chi tiết kỹ thuật</summary>
-            <code className="mt-2 block max-h-24 overflow-auto rounded-lg bg-secondary/60 p-3">
-              {this.state.error.message}
-            </code>
-          </details>
         </div>
       </div>
     );
@@ -72,10 +71,12 @@ function WebGLFallback() {
         <MuseumLogo size={64} className="mx-auto rounded-full border border-primary/15 shadow-md" />
         <div className="mt-5 flex items-center justify-center gap-2 text-destructive">
           <AlertTriangle className="size-5" />
-          <h2 className="text-lg font-semibold text-foreground">Thiết bị không hỗ trợ WebGL</h2>
+          <h2 className="text-lg font-semibold text-foreground">
+            Thiết bị không hỗ trợ đồ họa 3D
+          </h2>
         </div>
         <p className="mt-2 text-sm leading-6 text-muted-foreground">
-          Hãy bật hardware acceleration hoặc thử Chrome, Edge hay Firefox phiên bản mới.
+          Hãy bật tăng tốc phần cứng hoặc dùng phiên bản trình duyệt mới nhất.
         </p>
       </div>
     </div>

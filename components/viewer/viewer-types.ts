@@ -4,15 +4,17 @@ export type AssetProfile = "mobile" | "pc";
 
 export const ASSET_PROFILES: Record<
   AssetProfile,
-  { filename: string; label: string }
+  { filename: string; label: string; badgeLabel: string }
 > = {
   mobile: {
     filename: "aircraft-mobile.glb",
-    label: "MOBILE · 512",
+    label: "Thiết bị di động",
+    badgeLabel: "MOBILE · 512",
   },
   pc: {
     filename: "aircraft-pc.glb",
-    label: "PC · 1K",
+    label: "Máy tính",
+    badgeLabel: "PC · 1K",
   },
 };
 
@@ -26,8 +28,8 @@ export type ViewerSettings = {
 };
 
 export const MODEL_STATS = {
-  triangles: "259.3K",
+  triangles: "259,3 k",
   meshes: "25",
   materials: "25",
-  dimensions: "13.52 × 5.43 × 13.52 m",
+  dimensions: "13,52 × 5,43 × 13,52 m",
 } as const;

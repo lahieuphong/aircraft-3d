@@ -3,8 +3,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Bảo tàng Chứng tích Chiến tranh — Aircraft Digital Twin",
-  applicationName: "War Remnants Museum Aircraft Digital Twin",
+  title: "Bảo tàng Chứng tích Chiến tranh — Mô hình máy bay 3D",
+  applicationName:
+    "Mô hình máy bay 3D — Bảo tàng Chứng tích Chiến tranh",
   description:
     "Trải nghiệm mô hình máy bay 3D trực tuyến của Bảo tàng Chứng tích Chiến tranh.",
 };

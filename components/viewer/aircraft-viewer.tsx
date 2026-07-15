@@ -123,7 +123,7 @@ function AircraftViewerContent() {
         await rootRef.current?.requestFullscreen();
       }
     } catch (error) {
-      console.warn("Fullscreen is unavailable", error);
+      console.warn("Không thể mở chế độ toàn màn hình", error);
     }
   }, []);
 
@@ -149,14 +149,14 @@ function AircraftViewerContent() {
       }
 
       const key = event.key.toLowerCase();
-      if (key === "r") resetView();
-      if (key === "g") {
+      if (key === "d") resetView();
+      if (key === "l") {
         setSettings((current) => ({
           ...current,
           showGrid: !current.showGrid,
         }));
       }
-      if (key === "w") {
+      if (key === "k") {
         setSettings((current) => ({
           ...current,
           wireframe: !current.wireframe,
@@ -182,7 +182,10 @@ function AircraftViewerContent() {
       data-ready={isLoaded}
       data-asset-profile={assetProfile ?? "detecting"}
     >
-      <div className="absolute inset-0 z-0" aria-label="Khung hiển thị mô hình máy bay 3D">
+      <div
+        className="absolute inset-0 z-0"
+        aria-label="Khung hiển thị mô hình máy bay 3D"
+      >
         {modelUrl ? (
           <Canvas
             dpr={
@@ -237,7 +240,6 @@ function AircraftViewerContent() {
           settings={settings}
           viewPreset={viewPreset}
           assetProfile={assetProfile}
-          isLoaded={isLoaded}
           isFullscreen={isFullscreen}
           onSettingsChange={updateSettings}
           onViewChange={changeView}
@@ -250,9 +252,12 @@ function AircraftViewerContent() {
         <div className="absolute inset-0 z-50 grid place-items-center bg-background/94 px-5 backdrop-blur-lg">
           <div className="glass-panel max-w-sm rounded-2xl p-7 text-center">
             <AlertTriangle className="mx-auto size-8 text-amber-300" />
-            <h2 className="mt-4 text-lg font-semibold text-foreground">WebGL context đã bị gián đoạn</h2>
+            <h2 className="mt-4 text-lg font-semibold text-foreground">
+              Phiên đồ họa 3D đã bị gián đoạn
+            </h2>
             <p className="mt-2 text-sm leading-6 text-muted-foreground">
-              GPU có thể vừa đổi trạng thái hoặc thiếu bộ nhớ. Tải lại sẽ khởi tạo một context sạch.
+              Bộ xử lý đồ họa có thể vừa đổi trạng thái hoặc thiếu bộ nhớ.
+              Tải lại sẽ tạo phiên hiển thị mới.
             </p>
             <Button className="mt-6" onClick={() => window.location.reload()}>
               <RefreshCw />

@@ -44,6 +44,8 @@ const CAMERA_TARGET: [number, number, number] = [0, 2.72, 0];
 const MIN_CAMERA_DISTANCE = 0.1;
 const MAX_CAMERA_DISTANCE = 36;
 const MIN_CAMERA_ZOOM = 1;
+const CAMERA_DOLLY_SPEED = 0.55;
+const MAX_CAMERA_POLAR_ANGLE = Math.PI / 2 + Math.PI / 30;
 
 const CAMERA_PRESETS: Record<
   ViewPreset,
@@ -396,10 +398,10 @@ function CameraRig({ preset, revision }: CameraRigProps) {
       maxDistance={MAX_CAMERA_DISTANCE}
       minZoom={MIN_CAMERA_ZOOM}
       minPolarAngle={0}
-      maxPolarAngle={Math.PI / 2 - 0.015}
+      maxPolarAngle={MAX_CAMERA_POLAR_ANGLE}
       azimuthRotateSpeed={0.9}
       polarRotateSpeed={0.9}
-      dollySpeed={0.9}
+      dollySpeed={CAMERA_DOLLY_SPEED}
       truckSpeed={1.5}
       dollyToCursor
       infinityDolly={false}

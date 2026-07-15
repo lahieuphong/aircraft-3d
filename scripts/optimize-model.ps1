@@ -45,13 +45,13 @@ function Build-ModelVariant {
 
   Write-Host "[$Profile] Resize textures to max $TextureSize px..." -ForegroundColor Cyan
   Invoke-Checked {
-    & npx gltf-transform resize $PreparedModel $ResizedModel --width $TextureSize --height $TextureSize
+    & yarn exec gltf-transform resize $PreparedModel $ResizedModel --width $TextureSize --height $TextureSize
   } "Resize $Profile failed."
 
   if ($WebP) {
     Write-Host "[$Profile] Encode WebP fallback..." -ForegroundColor Cyan
     Invoke-Checked {
-      & npx gltf-transform webp $ResizedModel $TextureModel --quality $WebPQuality --effort 5
+      & yarn exec gltf-transform webp $ResizedModel $TextureModel --quality $WebPQuality --effort 5
     } "WebP compression $Profile failed."
   }
   else {
@@ -68,12 +68,12 @@ function Build-ModelVariant {
 
   Write-Host "[$Profile] Merge compatible primitives to reduce draw calls..." -ForegroundColor Cyan
   Invoke-Checked {
-    & npx gltf-transform join $SimplifiedModel $JoinedModel --keepMeshes false --keepNamed false
+    & yarn exec gltf-transform join $SimplifiedModel $JoinedModel --keepMeshes false --keepNamed false
   } "Primitive join $Profile failed."
 
   Write-Host "[$Profile] Encode geometry with Meshopt..." -ForegroundColor Cyan
   Invoke-Checked {
-    & npx gltf-transform meshopt $JoinedModel $OutputModel --level high
+    & yarn exec gltf-transform meshopt $JoinedModel $OutputModel --level high
   } "Meshopt $Profile failed."
 }
 

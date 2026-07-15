@@ -23,7 +23,7 @@ const DEFAULT_SETTINGS: ViewerSettings = {
   autoRotate: false,
   showGrid: true,
   wireframe: false,
-  exposure: 1.05,
+  exposure: 0.9,
   environmentIntensity: 1,
   quality: "balanced",
 };

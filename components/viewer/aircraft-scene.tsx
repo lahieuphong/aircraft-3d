@@ -21,9 +21,11 @@ import {
   AgXToneMapping,
   FrontSide,
   Group,
+  Material,
   Mesh,
   MeshStandardMaterial,
   NormalBlending,
+  SRGBColorSpace,
   Texture,
   type WebGLRenderer,
 } from "three";
@@ -102,20 +104,21 @@ function AircraftScene({
       <CameraRig preset={viewPreset} revision={viewRevision} />
       <AdaptiveDpr pixelated />
 
-      <ambientLight color="#ffffff" intensity={0.38 * environmentIntensity} />
+      <ambientLight color="#ffffff" intensity={0.16 * environmentIntensity} />
       <directionalLight
         color="#fffaf2"
-        intensity={1.75 * environmentIntensity}
+        intensity={1.05 * environmentIntensity}
         position={[8, 14, 9]}
       />
       <directionalLight
         color="#d8deea"
-        intensity={0.65 * environmentIntensity}
+        intensity={0.28 * environmentIntensity}
         position={[-12, 5, -10]}
       />
 
       <Suspense fallback={null}>
         <Environment
+          environmentIntensity={0.62 * environmentIntensity}
           resolution={
             mobileOptimized ? (quality === "quality" ? 128 : 64) : quality === "quality" ? 256 : 128
           }
@@ -123,7 +126,7 @@ function AircraftScene({
           <Lightformer
             form="rect"
             color="#fffaf4"
-            intensity={4.6 * environmentIntensity}
+            intensity={1.75}
             position={[0, 12, -10]}
             rotation={[Math.PI / 2, 0, 0]}
             scale={[12, 12, 1]}
@@ -131,7 +134,7 @@ function AircraftScene({
           <Lightformer
             form="rect"
             color="#d9dce5"
-            intensity={3.1 * environmentIntensity}
+            intensity={0.75}
             position={[-10, 4, 2]}
             rotation={[0, Math.PI / 2, 0]}
             scale={[10, 8, 1]}
@@ -139,7 +142,7 @@ function AircraftScene({
           <Lightformer
             form="ring"
             color="#ffffff"
-            intensity={1.15 * environmentIntensity}
+            intensity={0.3}
             position={[8, 2, 8]}
             rotation={[0, -Math.PI / 4, 0]}
             scale={5}
@@ -150,7 +153,6 @@ function AircraftScene({
           <AircraftModel
             modelUrl={modelUrl}
             wireframe={wireframe}
-            environmentIntensity={environmentIntensity}
             onReady={onModelReady}
           />
         </RotatingModel>
@@ -191,14 +193,12 @@ function AircraftScene({
 type AircraftModelProps = {
   modelUrl: string;
   wireframe: boolean;
-  environmentIntensity: number;
   onReady: () => void;
 };
 
 function AircraftModel({
   modelUrl,
   wireframe,
-  environmentIntensity,
   onReady,
 }: AircraftModelProps) {
   const renderer = useThree((state) => state.gl);
@@ -209,7 +209,6 @@ function AircraftModel({
     loader.setKTX2Loader(getKTX2Loader(renderer));
     loader.setMeshoptDecoder(MeshoptDecoder);
   });
-  const scene = useMemo(() => gltf.scene.clone(true), [gltf.scene]);
   const glassMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
@@ -227,6 +226,35 @@ function AircraftModel({
       }),
     [],
   );
+  const { scene, ownedMaterials } = useMemo(() => {
+    const clonedScene = gltf.scene.clone(true);
+    const clonedMaterials = new Set<Material>();
+
+    clonedScene.traverse((object) => {
+      if (!(object instanceof Mesh)) return;
+
+      const sourceMaterials = Array.isArray(object.material)
+        ? object.material
+        : [object.material];
+      const materials = sourceMaterials.map((material) => {
+        if (material.name.trim().toLowerCase() === "mat 20") {
+          object.renderOrder = 20;
+          return glassMaterial;
+        }
+
+        const clonedMaterial = material.clone();
+        clonedMaterials.add(clonedMaterial);
+        return clonedMaterial;
+      });
+
+      object.material = Array.isArray(object.material) ? materials : materials[0];
+    });
+
+    return {
+      scene: clonedScene,
+      ownedMaterials: Array.from(clonedMaterials),
+    };
+  }, [glassMaterial, gltf.scene]);
 
   useEffect(() => {
     const maxAnisotropy = Math.min(8, renderer.capabilities.getMaxAnisotropy());
@@ -236,27 +264,13 @@ function AircraftModel({
 
       object.castShadow = false;
       object.receiveShadow = false;
-      const sourceMaterials = Array.isArray(object.material)
+      const materials = Array.isArray(object.material)
         ? object.material
         : [object.material];
-      const materials = sourceMaterials.map((material) =>
-        material.name.trim().toLowerCase() === "mat 20"
-          ? glassMaterial
-          : material,
-      );
-
-      object.material = Array.isArray(object.material) ? materials : materials[0];
 
       for (const material of materials) {
         if (material instanceof MeshStandardMaterial) {
           material.wireframe = wireframe;
-          material.envMapIntensity = environmentIntensity;
-
-          if (material === glassMaterial) {
-            material.envMapIntensity = 0.8 * environmentIntensity;
-            object.renderOrder = 20;
-          }
-
           material.needsUpdate = true;
         }
 
@@ -270,9 +284,15 @@ function AircraftModel({
     });
 
     invalidate();
-  }, [environmentIntensity, glassMaterial, invalidate, renderer, scene, wireframe]);
+  }, [invalidate, renderer, scene, wireframe]);
 
   useEffect(() => () => glassMaterial.dispose(), [glassMaterial]);
+  useEffect(
+    () => () => {
+      for (const material of ownedMaterials) material.dispose();
+    },
+    [ownedMaterials],
+  );
 
   useEffect(() => {
     onReady();
@@ -355,6 +375,7 @@ function RendererSettings({ exposure, onContextLost }: RendererSettingsProps) {
   useEffect(() => {
     // Three.js exposes renderer exposure as a mutable runtime property.
     // eslint-disable-next-line react-hooks/immutability
+    renderer.outputColorSpace = SRGBColorSpace;
     renderer.toneMapping = AgXToneMapping;
     renderer.toneMappingExposure = exposure;
     invalidate();

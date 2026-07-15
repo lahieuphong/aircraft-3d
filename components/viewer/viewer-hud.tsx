@@ -247,7 +247,7 @@ function ViewerHud({
               >
                 <Slider
                   min={0.55}
-                  max={1.65}
+                  max={1.3}
                   step={0.05}
                   value={[settings.exposure]}
                   onValueChange={([value]) => onSettingsChange({ exposure: value })}
@@ -261,7 +261,7 @@ function ViewerHud({
               >
                 <Slider
                   min={0.35}
-                  max={1.8}
+                  max={1.4}
                   step={0.05}
                   value={[settings.environmentIntensity]}
                   onValueChange={([value]) =>
